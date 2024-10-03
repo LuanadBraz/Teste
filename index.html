@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Vips</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, button {
+            padding: 12px;
+            width: 100%;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #808080;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #C0C0C0;
+        }
+        .btn-regras {
+            background-size: cover;
+            background-position: top;
+            color: black; /* Texto preto */
+            font-weight: bold;
+            margin-bottom: 20px;
+            height: 50px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            position: relative;
+            display: flex;
+            justify-content: top;
+            align-items: center;
+            overflow: hidden;
+            background-image: none; /* Remover imagem de fundo padrão */
+        }
+        .btn-regras img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8; /* Imagem translúcida */
+            z-index: 0;
+        }
+        .btn-regras span {
+            position: relative;
+            z-index: 1;
+            font-size: 18px;
+            color: black; /* Texto sempre visível em preto */
+	    font-weight: bold; /* Destacar o texto */
+            writing-mode: vertical-rl; /* Rotacionar o texto */
+            transform: rotate(222deg); /* Inverter a rotação */
+        }
+        .btn-regras:hover img {
+            opacity: 0.5; /* Aumenta a opacidade da imagem ao passar o mouse */
+        }
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #555;
+        }
+        .resultado {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+    <script>
+        // Função para formatar o valor como moeda brasileira (R$)
+        function formatarMoeda(element) {
+            let valor = element.value;
+
+            // Remove qualquer caractere que não seja número ou ponto
+            valor = valor.replace(/\D/g, "");
+
+            // Converte para um número e divide por 100 para formar a casa decimal
+            valor = (valor / 100).toFixed(2);
+
+            // Substitui o ponto decimal por vírgula
+            valor = valor.replace(".", ",");
+
+            // Formata para o padrão brasileiro de moeda
+            element.value = "R$ " + valor;
+        }
+
+        // Função que calcula valor1 - valor2 e aplica a porcentagem escolhida no resultado
+        function calcular() {
+            // Obtém os valores dos inputs e remove o "R$" e pontos/vírgulas
+            let valor1 = parseFloat(document.getElementById("valor1").value.replace("R$ ", "").replace(/\./g, "").replace(",", "."));
+            let valor2 = parseFloat(document.getElementById("valor2").value.replace("R$ ", "").replace(/\./g, "").replace(",", "."));
+
+            // Verifica se os valores foram inseridos
+            if (isNaN(valor1) || isNaN(valor2)) {
+                alert("Por favor, insira todos os valores corretamente!");
+                return;
+            }
+
+            // Calcula a diferença entre valor1 e valor2
+            let resultado = valor1 - valor2;
+
+            // Obtém a porcentagem escolhida pelo usuário
+            let porcentagemEscolhida = parseFloat(document.getElementById("porcentagem").value);
+            let porcentagemResultado = resultado * (porcentagemEscolhida / 100);
+
+            // Exibe os resultados na página
+            document.getElementById("resultado1").innerText = "Resultado (Depósitos - Saques): R$ " + resultado.toFixed(2).replace(".", ",");
+            document.getElementById("porcentagem1").innerText = porcentagemEscolhida + "% do Resultado: R$ " + porcentagemResultado.toFixed(2).replace(".", ",");
+        }
+
+        // Função que abre a página de regras
+        function abrirRegras() {
+            window.location.href = "regras.html"; // Substitua "regras.html" pelo link correto para a página de regras
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- Botão que redireciona para a página de regras com imagem de fundo -->
+        <button class="btn-regras" onclick="abrirRegras()">
+            <img src="Playbonds.png" alt="Imagem do botão"> <!-- Substitua pela URL da sua imagem -->
+            <span>Regras</span>
+        </button>
+        
+        <h1>Calculadora de clientes Vips</h1>
+        <p>Insira os valores de depósitos e saques da semana ou do mês e escolha a porcentagem para aplicar o resultado</p>
+        
+        <!-- Primeira operação (valor1 - valor2) -->
+        <label for="valor1">Depósitos:</label>
+        <input type="text" id="valor1" placeholder="Depósitos" oninput="formatarMoeda(this)">
+
+        <label for="valor2">Saques:</label>
+        <input type="text" id="valor2" placeholder="Saques" oninput="formatarMoeda(this)">
+
+        <!-- Escolha de porcentagem para o cálculo -->
+        <label for="porcentagem">Escolha a porcentagem para aplicar no resultado:</label>
+        <select id="porcentagem">
+            <option value="5">5%</option>
+            <option value="8">8%</option>
+            <option value="10">10%</option>
+            <option value="30">30%</option>
+        </select>
+
+        <button onclick="calcular()">Calcular</button>
+
+        <!-- Exibindo os resultados -->
+        <div class="resultado">
+            <p id="resultado1"></p>
+            <p id="porcentagem1"></p>
+        </div>
+    </div>
+</body>
+</html>
