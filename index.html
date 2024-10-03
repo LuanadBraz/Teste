@@ -107,21 +107,26 @@
     </style>
     <script>
         // Função para formatar o valor como moeda brasileira (R$)
-        function formatarMoeda(element) {
-            let valor = element.value;
+    function formatarMoeda(element) {
+    let valor = element.value;
 
-            // Remove qualquer caractere que não seja número ou ponto
-            valor = valor.replace(/\D/g, "");
+    // Remove qualquer caractere que não seja número, ponto ou vírgula
+    valor = valor.replace(/[^\d.,]/g, "");
 
-            // Converte para um número e divide por 100 para formar a casa decimal
-            valor = (valor / 100).toFixed(2);
+    // Se houver vírgula, substituí-la por ponto para normalizar o valor numérico
+    if (valor.includes(",")) {
+        valor = valor.replace(",", ".");
+    }
 
-            // Substitui o ponto decimal por vírgula
-            //valor = valor.replace(".", ",");
+    // Converte para um número flutuante e divide por 100 para formar a casa decimal
+    valor = parseFloat(valor).toFixed(2);
 
-            // Formata para o padrão brasileiro de moeda
-            element.value = "R$ " + valor;
-        }
+    // Substitui o ponto decimal por vírgula para o padrão brasileiro
+    valor = valor.replace(".", ",");
+
+    // Formata para o padrão brasileiro de moeda
+    element.value = "R$ " + valor;
+}
 
         // Função que calcula valor1 - valor2 e aplica a porcentagem escolhida no resultado
         function calcular() {
