@@ -91,18 +91,23 @@
         }
     </style>
     <script>
+        function formatarValor(valor) {
+            // Remove todos os caracteres que não são dígitos
+            return parseFloat(valor.replace(/\./g, '').replace(',', '.'));
+        }
+
         function calcular() {
-            let valor1 = parseFloat(document.getElementById("valor1").value);
-            let valor2 = parseFloat(document.getElementById("valor2").value);
+            let valor1 = formatarValor(document.getElementById("valor1").value);
+            let valor2 = formatarValor(document.getElementById("valor2").value);
             if (isNaN(valor1) || isNaN(valor2)) {
-                alert("Por favor, insira todos os valores sem ponto ou vígula!");
+                alert("Por favor, insira todos os valores no formato R$X.XXX,XX!");
                 return;
             }
             let resultado = valor1 - valor2;
             let porcentagemEscolhida = parseFloat(document.getElementById("porcentagem").value);
             let porcentagemResultado = resultado * (porcentagemEscolhida / 100);
-            document.getElementById("resultado1").innerText = "Resultado (Depósitos - Saques): " + resultado;
-            document.getElementById("porcentagem1").innerText = porcentagemEscolhida + "% do Resultado: " + porcentagemResultado.toFixed(2);
+            document.getElementById("resultado1").innerText = "Resultado (Depósitos - Saques): R$" + resultado.toFixed(2).replace('.', ',');
+            document.getElementById("porcentagem1").innerText = porcentagemEscolhida + "% do Resultado: R$" + porcentagemResultado.toFixed(2).replace('.', ',');
         }
 
         function abrirRegras() {
@@ -124,10 +129,10 @@
         <p>Insira os valores de depósitos e saques da semana ou do mês e escolha a porcentagem para aplicar o resultado</p>
         
         <label for="valor1">Depósitos:</label>
-        <input type="number" id="valor1" placeholder="Depósitos">
+        <input type="text" id="valor1" placeholder="R$2.000,00">
 
         <label for="valor2">Saques:</label>
-        <input type="number" id="valor2" placeholder="Saques">
+        <input type="text" id="valor2" placeholder="R$1.000,00">
 
         <label for="porcentagem">Escolha a porcentagem para aplicar no resultado:</label>
         <select id="porcentagem">
@@ -146,4 +151,3 @@
     </div>
 </body>
 </html>
-
